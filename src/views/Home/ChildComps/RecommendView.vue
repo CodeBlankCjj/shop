@@ -32,7 +32,7 @@ export default {
   .recommend-item {
     flex: 1;
     img {
-      width: 86px;
+      width: 100%;
       margin-bottom: 10px;
     }
   }
