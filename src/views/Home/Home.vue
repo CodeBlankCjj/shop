@@ -26,6 +26,7 @@ import BackTop from '../../components/content/BackTop/BackTop'
 
 import { getHomeMultidata, getHomeGoods } from '../../network/home'
 import { debounce } from '../../common/utils'
+import { itemListenerMixin } from '../../common/mixin'
 
 export default {
   components: {
@@ -44,6 +45,7 @@ export default {
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
   },
+  mixins: [itemListenerMixin],
   data() {
     return {
       banners: [],
@@ -57,14 +59,9 @@ export default {
       isShow: false,
       tabOffsetTop: 0,
       isTabFixed: false,
-      saveY: 0
+      saveY: 0,
+      itemImgListener: null
     }
-  },
-  mounted() {
-    const refresh = debounce(this.$refs.scroll.refresh)
-    this.$bus.$on('itemImageLoad', () => {
-      refresh()
-    })
   },
   methods: {
     getHomeMultidata() {
@@ -79,6 +76,8 @@ export default {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
         this.$refs.scroll.finishPullUp()
+        this.$refs.scroll.refresh()
+
       })
     },
     tabClick(index) {
@@ -111,6 +110,7 @@ export default {
   },
   deactivated() {
     this.saveY = this.$refs.scroll.getScrollY()
+    this.$bus.$off('itemImgLoad', this.itemImgListener)
   }
 }
 </script>

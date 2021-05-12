@@ -37,7 +37,7 @@ export default {
     // this.scroll.on('pullingUp', () => {
     //   this.$emit('pullingUp')
     //})
-    if ( this.pullUpLoad) {
+    if ( this.pullUpLoad ) {
       this.scroll.on('pullingUp', () => {
         this.$emit('pullingUp')
       })
@@ -53,7 +53,7 @@ export default {
       this.scroll && this.scroll.scrollTo(x, y, time)
     },
     finishPullUp() {
-      this.scroll && this.scroll.finishPullUp()
+      this.scroll && this.scroll.finishPullUp && this.scroll.finishPullUp()
     },
     refresh() {
       this.scroll && this.scroll.refresh()
