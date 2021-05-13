@@ -42,9 +42,12 @@ export default {
 
 <style lang="scss" scoped>
 .back {
-  position: relative;
-  top: 6px;
-  right: -2px;
+  img{
+    position: relative;
+    width: 20px;
+    z-index: 9;
+    top: 5px;
+  }
 }
 .title {
   display: flex;

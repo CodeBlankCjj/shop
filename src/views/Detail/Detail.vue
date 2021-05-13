@@ -10,6 +10,8 @@
       <DetailCommentInfo ref="comment" :commentInfo="commentInfo"></DetailCommentInfo>
       <GoodsList ref="recommend" :goods="recommends"></GoodsList>
     </Scroll>
+    <DetailBottomBar></DetailBottomBar>
+    <BackTop @click.native="backClick" v-show="isShow"></BackTop>
   </div>
 </template>
 
@@ -21,12 +23,13 @@ import DetailShopInfo from './ChildComps/DetailShopInfo'
 import DetailGoodsInfo from './ChildComps/DetailGoodsInfo'
 import DetailParamInfo from './ChildComps/DetailParamInfo'
 import DetailCommentInfo from './ChildComps/DetailCommentInfo'
+import DetailBottomBar from './ChildComps/DetailBottomBar'
 
 import Scroll from '../../components/common/Scroll/Scroll'
 import GoodsList from '../../components/content/Goods/GoodsList'
 
 import { getDetail, Goods, Shop, GoodsParam, getRecommend } from '../../network/detail'
-import { itemListenerMixin } from '../../common/mixin'
+import { itemListenerMixin, backTopMixin } from '../../common/mixin'
 import { debounce } from '../../common/utils'
 
 export default {
@@ -40,9 +43,10 @@ export default {
     DetailParamInfo,
     DetailCommentInfo,
     GoodsList,
-    Scroll
+    Scroll,
+    DetailBottomBar
   },
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin, backTopMixin],
   data() {
     return {
       iid: null,
@@ -55,7 +59,7 @@ export default {
       recommends: [],
       themeTopYs: [],
       getThemeTopY: null,
-      currentIndex: 0
+      currentIndex: 0,
     }
   },
   created() {
@@ -101,6 +105,7 @@ export default {
           this.$refs.nav.currentIndex = this.currentIndex
         }
       }
+      this.isShow = (-position.y) > 1000
     }
   },
   destroyed() {
@@ -121,7 +126,7 @@ export default {
     background-color: #fff;
   }
   .content {
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 49px);
   }
 }
 </style>

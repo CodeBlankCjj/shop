@@ -22,11 +22,10 @@ import NavBar from '../../components/common/NavBar/NavBar'
 import TabControl from '../../components/content/TabControl/TabControl'
 import GoodsList from '../../components/content/Goods/GoodsList'
 import Scroll from '../../components/common/Scroll/Scroll'
-import BackTop from '../../components/content/BackTop/BackTop'
 
 import { getHomeMultidata, getHomeGoods } from '../../network/home'
 import { debounce } from '../../common/utils'
-import { itemListenerMixin } from '../../common/mixin'
+import { itemListenerMixin, backTopMixin } from '../../common/mixin'
 
 export default {
   components: {
@@ -36,8 +35,7 @@ export default {
     FeatureView,
     TabControl,
     GoodsList,
-    Scroll,
-    BackTop
+    Scroll
   },
   created() {
     this.getHomeMultidata()
@@ -45,7 +43,7 @@ export default {
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
   },
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin, backTopMixin],
   data() {
     return {
       banners: [],
@@ -56,7 +54,6 @@ export default {
         'sell': {page: 0, list: []},
       },
       currentType: 'pop',
-      isShow: false,
       tabOffsetTop: 0,
       isTabFixed: false,
       saveY: 0,
@@ -85,9 +82,6 @@ export default {
       this.$refs.tabControl1.currentIndex = index
       this.$refs.tabControl2.currentIndex = index
     },
-    backClick() {
-      this.$refs.scroll.scrollTo(0, 0)
-    },
     contentScroll(position) {
       this.isShow = (-position.y) > 1000
       this.isTabFixed = (-position.y) > this.tabOffsetTop
@@ -105,8 +99,8 @@ export default {
     }
   },
   activated() {
-    this.$refs.scroll.scrollTo(0, this.saveY, 0)
     this.$refs.scroll.refresh()
+    this.$refs.scroll.scrollTo(0, this.saveY, 0)
   },
   deactivated() {
     this.saveY = this.$refs.scroll.getScrollY()
